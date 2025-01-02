@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #00203FFF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: #ADEFD1FF;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        h2 {
+            color: #ADEFD1FF;
+        }
+        button{
+            font-weight: bold;
+            padding: 1em 5em;
+        }
+        .btn {
+            padding: 1em 5em;
+            background-color: orange;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Price Details</h2><br>
+    <form id="dynamicForm" novalidate>
+        <table id="dynamicTable">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Price Per Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="text" name="itemName[]" class="itemName" placeholder="Enter item name" onblur="validateItemName(this)" required>
+                        <span class="error"></span>
+                    </td>
+                    <td>
+                        <input type="text" name="quantity[]" class="quantity" placeholder="Enter quantity" oninput="allowNumbersOnly(this)" onblur="validateRequired(this)" required>
+                        <span class="error"></span>
+                    </td>
+                    <td>
+                        <input type="text" name="pricePerUnit[]" class="pricePerUnit" placeholder="Enter price" oninput="allowNumbersOnly(this)" onblur="validateRequired(this)" required>
+                        <span class="error"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table><br>
+
+        <button type="button" onclick="addRow()" >Add More</button>
+        <button type="button" onclick="removeRow()" >Remove Last Record</button>
+        <br><br>
+        <button type="submit" class="btn" onclick="submitForm(event)">Submit</button>
+    </form>
+
+    <script>
+
+        
+        function addRow() {
+            const tableBody = document.querySelector("#dynamicTable tbody");
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>
+                    <input type="text" name="itemName[]" class="itemName" placeholder="Enter item name" onblur="validateItemName(this)" required>
+                    <span class="error"></span>
+                </td>
+                <td>
+                    <input type="text" name="quantity[]" class="quantity" placeholder="Enter quantity" oninput="allowNumbersOnly(this)" onblur="validateRequired(this)" required>
+                    <span class="error"></span>
+                </td>
+                <td>
+                    <input type="text" name="pricePerUnit[]" class="pricePerUnit" placeholder="Enter price" oninput="allowNumbersOnly(this)" onblur="validateRequired(this)" required>
+                    <span class="error"></span>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+            newRow.querySelector(".itemName").focus();
+        }
+
+
+        function removeRow() {
+            const rows = document.querySelectorAll("#dynamicTable tbody tr");
+            if (rows.length > 1) {
+                rows[rows.length - 1].remove();
+            } else {
+                alert("At least one row is required.");
+            }
+        }
+
+        function allowNumbersOnly(input) {
+            input.value = input.value.replace(/[^0-9.]/g, ""); // Allow numbers and period
+            if ((input.value.match(/\./g) || []).length > 1) {
+                input.value = input.value.slice(0, input.value.lastIndexOf("."));
+            }
+        }
+
+        function validateRequired(input) {
+            const error = input.nextElementSibling;
+            if (!input.value.trim()) {
+                error.textContent = "This field is required.";
+            } else {
+                error.textContent = "";
+            }
+        }
+
+        function validateItemName(input) {
+            const error = input.nextElementSibling;
+            const itemNames = document.querySelectorAll(".itemName");
+            const currentName = input.value.trim();
+
+            if (!currentName) {
+                error.textContent = "Item name is required.";
+                return;
+            }
+            if (!/^[a-zA-Z]+$/.test(currentName)) {
+                error.textContent = "Only letters are allowed.";
+                input.value = "";
+                return;
+            }
+
+            // Check for duplicates
+            let duplicateFound = false;
+            itemNames.forEach((nameField) => {
+                if (nameField !== input && nameField.value.trim() === currentName) {
+                    duplicateFound = true;
+                }
+            });
+
+            if (duplicateFound) {
+                error.textContent = "Duplicate item name is not allowed.";
+                input.value = "";
+            } else {
+                error.textContent = "";
+            }
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const rows = document.querySelectorAll("#dynamicTable tbody tr");
+            let isValid = true;
+
+            rows.forEach((row) => {
+                const inputs = row.querySelectorAll("input");
+                inputs.forEach((input) => {
+                    if (input.required && !input.value.trim()) {
+                        validateRequired(input);
+                        isValid = false;
+                    }
+                });
+                validateItemName(row.querySelector(".itemName"));
+            });
+
+            if (isValid) {
+                alert("Form submitted successfully!");
+                document.getElementById("dynamicForm").reset();
+                window.location.reload(); // Refresh the page
+            }
+        }
+    </script>
+</body>
+</html>

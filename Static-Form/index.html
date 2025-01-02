@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Enhanced Form Validation</title>
+
+</head>
+<body>
+    <div class="container">
+        <h2>Student Form</h2>
+        <form id="frmSignUp" novalidate>
+            <label for="txtName">Name:</label><br>
+            <input type="text" id="txtName" name="txtName" placeholder="Enter your full name" required minlength="2" maxlength="50"><br><br>
+        
+
+            <label for="txtEmail">Email:</label><br>
+            <input type="email" id="txtEmail" name="txtEmail" placeholder="Enter your email address" required maxlength="100"><br><br>
+            
+
+            <label for="txtPhone">Phone Number:</label><br>
+            <input type="tel" id="txtPhone" name="txtPhone" placeholder="10-digit phone number" required pattern="[0-9]{10}" maxlength="10"><br><br>
+            
+
+            <label for="txtDob">Date of Birth:</label><br>
+            <input type="date" id="txtDob" name="txtDob" required><br><br>
+            
+
+            <label for="rdoGender">Gender:</label><br>
+            <input type="radio" id="rdoMale" name="rdoGender" value="male" required>
+            <label for="rdoMale">Male</label>
+            <input type="radio" id="rdoFemale" name="rdoGender" value="female" required>
+            <label for="rdoFemale">Female</label>
+            <input type="radio" id="rdoOther" name="rdoGender" value="other" required>
+            <label for="rdoOther">Other</label><br><br>
+            
+
+            <label for="ddlCountry">Country:</label><br>
+            <select id="ddlCountry" name="ddlCountry" required>
+                <option value="">Select a country</option>
+                <option value="usa">USA</option>
+                <option value="canada">Canada</option>
+                <option value="uk">UK</option>
+                <option value="india">India</option>
+                <option value="australia">Australia</option>
+            </select><br><br>
+            
+
+            <label for="txtAddress">Address:</label><br>
+            <textarea id="txtAddress" name="txtAddress" placeholder="Enter your full address" required rows="7" cols="60" minlength="5" maxlength="200"></textarea><br><br>
+            
+
+            <label for="txtPassword">Password:</label><br>
+            <input type="password" id="txtPassword" name="txtPassword" placeholder="Enter a strong password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" title="Password must have at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long." required minlength="8" maxlength="20"><br><br>
+
+            <label for="txtConfirmPassword">Confirm Password:</label><br>
+            <input type="password" id="txtConfirmPassword" name="txtConfirmPassword" placeholder="Re-enter your password" required minlength="8" maxlength="20"><br><br>
+
+
+            <label>
+                <input type="checkbox" id="chkAdditionalInfo"> Provide Additional Information
+            </label>
+            <div id="additionalInfoFields" class="conditional-field">
+                <label for="txtParentName">Father Name:</label><br>
+                <input type="text" id="txtParentName" name="txtParentName" placeholder="Enter your father name" minlength="2"><br><br>
+
+                <label for="txtOccupation">Occupation:</label><br>
+                <input type="text" id="txtOccupation" name="txtOccupation" placeholder="Enter occupation" minlength="3"><br><br>
+            </div><br><br>
+
+            <label>
+                <input type="checkbox" id="chkTerms" name="chkTerms" required> I agree to the terms and conditions
+            </label><br><br>
+
+            <button>Submit</button>
+        </form>
+    </div>
+
+
+
+    <script src="index.js"></script>
+    
+    
+
+</body>
+</html>
